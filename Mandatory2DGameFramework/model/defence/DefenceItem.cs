@@ -1,12 +1,17 @@
-﻿public class DefenceObject : WorldObject
+﻿public class DefenceObject
 {
-    public string Name { get; set; }
-    public int ReduceHitPoint { get; set; }
+    public string Name { get; private set; }
+    public int DefencePoint { get; private set; }
+    public int Weight { get; private set; }
+    public int Durability { get; private set; }
+    public bool IsEquipped { get; private set; }
 
-    public DefenceObject(string name, int reduceHitPoint, int x, int y, bool isRemovable)
-        : base(x, y, isRemovable)
+    public DefenceObject(string name, int defencePoint, int weight, int durability, bool isEquipped)
     {
         Name = name;
-        ReduceHitPoint = reduceHitPoint;
+        DefencePoint = defencePoint;
+        Weight = weight;
+        Durability = durability;
+        IsEquipped = isEquipped;
     }
 }

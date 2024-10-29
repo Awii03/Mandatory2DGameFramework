@@ -1,25 +1,40 @@
-﻿class Program
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Xml.Linq;
+
+class Program
 {
     static void Main(string[] args)
     {
+        var logger = MyLogger.Instance;
+        logger.AddListener(new ConsoleTraceListener());
+
+        // Simpel konfiguration direkte i koden for demonstration
         World world = new World(10, 10);
+        logger.Log("World created with dimensions 10x10.");
 
-        Creature hero = new Creature("Hero", 100, 0, 0);
+        Hero hero = new Hero("Hero", 100, 0, 0);
         world.AddCreature(hero);
+        logger.Log($"Hero created with 100 HP at (0,0).");
 
+        Enemy enemy = new Enemy("Enemy", 50, 2, 2);
+        world.AddCreature(enemy);
+        logger.Log($"Enemy created with 50 HP at (2,2).");
+
+        // Tilføj våben og forsvar til helten
         AttackItem sword = new AttackItem("Sword", 10, 1, 1, 1, true);
         DefenceObject shield = new DefenceObject("Shield", 5, 1, 1, true);
-
         hero.AttackItems.Add(sword);
         hero.DefenceItems.Add(shield);
+        logger.Log("Hero equipped with Sword and Shield.");
 
-        Creature enemy = new Creature("Enemy", 50, 2, 2);
-        world.AddCreature(enemy);
-
-        Console.WriteLine($"{enemy.Name} starts with {enemy.HitPoints} HP.");
-
+        // Simuler et angreb
+        logger.Log($"{enemy.Name} starts with {enemy.HitPoints} HP.");
         hero.Hit(enemy, sword.HitPoint);
+        logger.Log($"{enemy.Name} has {enemy.HitPoints} HP after being hit.");
 
-        Console.WriteLine($"{enemy.Name} has {enemy.HitPoints} HP after being hit.");
+        // Output resultater
+        Console.WriteLine($"{enemy.Name} has {enemy.HitPoints} HP after being hit by {hero.Name}.");
     }
 }

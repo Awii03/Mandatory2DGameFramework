@@ -1,27 +1,23 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Linq;
+
 public class World
 {
-    public int MaxX { get; set; }
-    public int MaxY { get; set; }
-    public List<Creature> Creatures { get; set; }
-    public List<WorldObject> WorldObjects { get; set; }
+    private List<Creature> _creatures;
 
-    public World(int maxX, int maxY)
+    public World(int width, int height)
     {
-        MaxX = maxX;
-        MaxY = maxY;
-        Creatures = new List<Creature>();
-        WorldObjects = new List<WorldObject>();
+        _creatures = new List<Creature>();
+        // Initialize the world with width and height
     }
 
-    // Add methods to manage creatures and objects
     public void AddCreature(Creature creature)
     {
-        Creatures.Add(creature);
+        _creatures.Add(creature);
     }
 
-    public void AddWorldObject(WorldObject worldObject)
+    public Creature GetCreatureByName(string name)
     {
-        WorldObjects.Add(worldObject);
+        return _creatures.FirstOrDefault(c => c.Name == name);
     }
 }

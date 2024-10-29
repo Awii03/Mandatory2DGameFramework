@@ -1,14 +1,17 @@
 ﻿public class Creature
 {
-    public string Name { get; set; }
-    public int HitPoints { get; set; }
-    public List<AttackItem> AttackItems { get; set; }
-    public List<DefenceObject> DefenceItems { get; set; }
-    public int X { get; set; }
-    public int Y { get; set; }
+    private static int _idCounter = 0;
+    public int Id { get; private set; }
+    public string Name { get; private set; }
+    public int HitPoints { get; private set; }
+    public int X { get; private set; }
+    public int Y { get; private set; }
+    public List<AttackItem> AttackItems { get; private set; }
+    public List<DefenceObject> DefenceItems { get; private set; }
 
     public Creature(string name, int hitPoints, int x, int y)
     {
+        Id = ++_idCounter;
         Name = name;
         HitPoints = hitPoints;
         X = x;
@@ -19,25 +22,14 @@
 
     public void Hit(Creature target, int damage)
     {
-        target.ReceiveHit(damage);
+        int totalDamage = damage + AttackItems.Sum(item => item.HitPoint);
+        target.ReceiveDamage(totalDamage);
     }
 
-    public void ReceiveHit(int damage)
+    public void ReceiveDamage(int damage)
     {
-        int totalDamage = damage;
-        foreach (var defence in DefenceItems)
-        {
-            totalDamage -= defence.ReduceHitPoint;
-        }
-        HitPoints -= Math.Max(0, totalDamage);
-        if (HitPoints <= 0)
-        {
-            // Creature dies
-        }
-    }
-
-    public void Loot(WorldObject obj)
-    {
-        // Code to pick up objects, e.g., add to inventory
+        int totalDefence = DefenceItems.Sum(item => item.DefencePoint);
+        int actualDamage = Math.Max(0, damage - totalDefence);
+        HitPoints -= actualDamage;
     }
 }
